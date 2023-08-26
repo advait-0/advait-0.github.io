@@ -1,13 +1,13 @@
 ---
 layout: page
-title: submenus
+title: More
 nav: true
-nav_order: 6
+nav_order: 4
 dropdown: true
 children: 
-    - title: publications
-      permalink: /publications/
-    - title: divider
-    - title: projects
-      permalink: /projects/
+    - title: GSoC'23
+      permalink: /GSoC/
+    # - title: divider
+    # - title: Projects
+    #   permalink: /projects/
 ---
