@@ -6,4 +6,4 @@ description: What did I do to get in?
 redirect: /GSoC23/Pre-GSoC/
 ---
 
-
+What did I do to get in?
