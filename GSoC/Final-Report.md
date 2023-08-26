@@ -8,26 +8,12 @@ date: 2023-08-25
 
 authors:
   - name: Advait Dhamorikar
-    # url: "https://en.wikipedia.org/wiki/Albert_Einstein"
+    # url: "https://en.wikipedia.org"
     affiliations:
       name: Google Summer of Code
-  # - name: Boris Podolsky
-  #   url: "https://en.wikipedia.org/wiki/Boris_Podolsky"
-  #   affiliations:
-  #     name: IAS, Princeton
-  # - name: Nathan Rosen
-  #   url: "https://en.wikipedia.org/wiki/Nathan_Rosen"
-  #   affiliations:
-  #     name: IAS, Princeton
+ 
 
-# bibliography: 2018-12-22-distill.bib
 
-# Optionally, you can add a table of contents to your post.
-# NOTES:
-#   - make sure that TOC names match the actual section names
-#     for hyperlinks within the post to work correctly.
-#   - we may want to automate TOC generation in the future using
-#     jekyll-toc plugin (https://github.com/toshimaru/jekyll-toc).
 toc:
   # - name: Pre-GSoC
   #   # if a section has subsections, you can add them as follows:
@@ -42,25 +28,6 @@ toc:
 
   - name: Future Work
   - name: Acknowledgements
-
-
-# Below is an example of injecting additional post-specific styles.
-# If you use this post as a template, delete this _styles block.
-_styles: >
-  .fake-img {
-    background: #bbb;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 12px;
-  }
-  .fake-img p {
-    font-family: monospace;
-    color: white;
-    text-align: left;
-    margin: 12px 0;
-    text-align: center;
-    font-size: 16px;
-  }
 
 ---
 This is my Google Summer of Code 2023 project with libcamera.
@@ -78,7 +45,7 @@ It aims to move the current V4L2 implementation of accessing and controlling cam
 <span style="color:#B509AC"> Project:</span> Integrating libcamera into OpenCV
 
 <span style="color:#B509AC"> Links:</span>
-* [Code](To be added)
+* [Github](https://github.com/advait-0/opencv/tree/libcamera-final)
 * [Project Page](https://summerofcode.withgoogle.com/archive/2023/projects/lKttObKa)  
 
 
@@ -115,10 +82,17 @@ Created requests are queued to camera.
 
 ## Contributions
 You can check my commits and code here:
-(add link)
+1. [Adding necessary libcamera addons to backend](https://github.com/opencv/opencv/commit/bfef36cec41571c62f383d92ee5fbc6a47673e24) 
+2. [Implement open functionality](https://github.com/opencv/opencv/commit/e8f2cc51aaa45ea4eb0e23273a3cc8b882ce84a2)
+3. [Add buffer allocation capabilities](https://github.com/opencv/opencv/commit/3bbbfff7d9487c99e2394ed97dc13a3356ee024e)
+4. [Add all necessary IVideoCapture functions framework](https://github.com/opencv/opencv/commit/796aaa2995d917cfedc3bf40201862303425bafd)
+5. [Add pixelformat and colour conversion capabilities](https://github.com/opencv/opencv/commit/ee070868e67a5d6c5348854527c401794e6eefb4)
+6. [Bug fixes and optimizations](https://github.com/opencv/opencv/commit/c7759e45e7cbff8e4654f0f3ed62ad93af95371f)
 
 <br>
 
+### Known issues
+The backend has been integrated and supports majority of the IVideoCapture functions and the stream data is successfully being mmaped, however the format and colour conversion of this mapped data is still in testing for YUYV at the time of writing this blog.
 
 ## Future Work
 - [ ] &nbsp;Add support for additional formats like NV12.
