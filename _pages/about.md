@@ -23,10 +23,32 @@ social: true  # includes social icons at the bottom of the page
 I'm a curious learner trying to do the stuff I like!
 I am a Third year at VJTI Mumbai studying Electrical Engineering, my interest lies in tech, travelling and everything that makes me curious.
 
-Here's a cool chart of stars in the sky.
+I can write some more stuff here but umm can't think of anything at the moment hehe :)
 <!-- ![]()<img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1150&q=80"  width="70%" height="30%">  -->
 
-<div class="l-page">
-  <iframe src="{{ '/assets/plotly/space_bubble.html' | relative_url }}" frameborder='0' scrolling='no' height="500px" width="100%" style="border: 1px dashed grey;"></iframe>
-  <p class="caption"><a href="https://github.com/EnguerranVidal/HYG-STAR-MAP">Credits</a></p>
+<html>
+<head>
+    <style>
+        .img-size {
+            max-width: 50%; /* Adjust the percentage as needed */
+            height: auto; /* Maintain aspect ratio */
+            margin: 0 auto; /* Center horizontally */
+            display: block; /* Make sure the image is a block element */
+        }
+    </style>
+</head>
+<body>
+
+<div class="row">
+    <div class="col-sm mt-3 mt-md-2">
+        {% include figure.html path="assets/img/Dunnotar.jpeg" title="Dunnotar Castle in Scotland" class="img-fluid rounded z-depth-1 img-size" %}
+    </div>
 </div>
+<div class="caption">
+    Here's a random picture I clicked!
+</div>
+
+</body>
+</html>
+
+
