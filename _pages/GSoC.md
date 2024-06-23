@@ -68,7 +68,7 @@ _styles: >
 </div>
 
 
-This is Google Summer of Code 2023 project with libcamera.
+This is my Google Summer of Code 2023 project with libcamera.
 <br>
 This project aims to move the current V4L2 implementation of accessing and controlling cameras in OpenCV to libcamera, this will allow for better functionality for more advanced and complex cameras. This will be done by creating a videoio plugin for OpenCV to support libcamera and then creating suitable classes and functions to add the desired functionality.
 

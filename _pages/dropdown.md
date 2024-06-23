@@ -7,7 +7,7 @@ dropdown: true
 children: 
     - title: GSoC'23
       permalink: /GSoC/
-    # - title: divider
-    # - title: Projects
+    - title: GSoC'24
+      permalink: /blog/
     #   permalink: /projects/
 ---
