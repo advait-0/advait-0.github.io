@@ -202,5 +202,8 @@ Investigating this in the Android codebase one can see
 We can see that it is because the modulo division is failing as the given buffer size of 35440 isn't divisible by our frame size in bytes.
 This is the issue I'm currently working on and I hope the Android AAC passthrough will be enabled really soon!
 
+### Acknowledgement
+Massive thanks to my mentor Thomas Guillem for always guiding me whenever I have doubts and I'm stuck, my learning experience has been great under his mentorship.
+
 Thanks for reading my update blog!
 I'll be back soon.
