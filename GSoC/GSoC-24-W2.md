@@ -8,7 +8,7 @@ date: 2024-06-29 20:43:16
 # nav_order: 3
 ---
 
-My project "Adding AAC via S/PDIF and Bluetooth" is one that really allows me to learn a lot about multimedia development nd allows me to apply the knowledge i've learnt in college at the some time.
+My project "Adding AAC via S/PDIF and Bluetooth" is one that really teaches me a lot about multimedia development and at the same time allows me to apply the knowledge i've learnt in college.
 I'll try to explain some aspects and updates about my work through this blog.
 
 ## AAC
