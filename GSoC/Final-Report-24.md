@@ -1,0 +1,193 @@
+---
+layout: distill
+title: Google Summer of Code'24
+permalink: /GSoC24/Final-Report/
+description: Final blog of my project adding AAC via S/PDIF and Bluetooth passthrough
+giscus_comments: false
+date: 2024-08-22
+
+authors:
+  - name: Advait Dhamorikar
+    # url: "https://en.wikipedia.org"
+    affiliations:
+      name: Google Summer of Code
+ 
+
+
+toc:
+  # - name: Pre-GSoC
+  #   # if a section has subsections, you can add them as follows:
+  - name: Project Details
+  #     subsections:
+  #     - name: Warm-Up Tasks
+  #     - name: Example Child Subsection 2
+  - name: Workflow Overview
+    subsections:
+        - name: What is passthrough and why does it matter?
+        - name: Behind the Scenes
+
+  - name: Contributions
+  - name: Future Work
+  - name: Acknowledgements
+
+---
+This is my Google Summer of Code 2024 project with VideoLAN.
+
+VideoLAN is a not-for-profit organization that develops and maintains a lot of open source projects which are used by billions worldwide including VLC Player, libVLC, x264, x265 and more.\
+This project aims to add passthrough for the AAC codec for hardware decoding over S/PDIF and Bluetooth for
+enchanced audio as quality is often lost due to the decoding and re-encoding due to the lossy nature of the codec.
+
+## <span> Project Details </span>
+
+<span style="color:#B509AC"> Contributor Name:</span> Advait Dhamorikar
+
+<span style="color:#B509AC"> Mentors:</span> Thomas Guillem
+
+<span style="color:#B509AC"> Organization:</span> VideoLAN 
+
+<span style="color:#B509AC"> Project:</span> Adding AAC via S/PDIF and Bluetooth passthrough
+
+<span style="color:#B509AC"> Links:</span>
+* [Git](https://code.videolan.org/advait-0/vlc)
+* [Project Page](https://summerofcode.withgoogle.com/programs/2024/projects/eyxxsgo0)  
+
+
+<br>
+
+## Workflow Overview
+#### What is passthrough and why does it matter?
+Passthrough is sending your digital data to be decoded by your receiver hardware which could include your headphones, earphones or amplifier instead of decoding it at the source.
+
+In our case considering VLC player, it doesn’t currently support AAC passthrough.
+
+To understand what was previously happening,
+consider an AAC encoded 2 channel(stereo sound setup) sampled at 44.1KHz Whenever an AAC encoded stream is played from a container say .aac or .mp4a then we interpret the data in it whether they're subtitles or actual audio.
+
+These samples are then packetized by a packetizer. A packetizer interprets the data headers which carry information about the stream that helps us in interpreting it correctly and helps us in synchronization.
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEC 61937 Frame Structure</title>
+    <style>
+        figure {
+            text-align: center;
+        }
+        img {
+            width: 70%; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
+<body>
+    <figure>
+        <img src="/assets/img/decode_log.png">
+        <figcaption>Initial AAC playback log.</figcaption>
+    </figure>
+</body>
+</html>
+
+The decoder then deciphers the information held by the buffers which in our example case is the Lavc59.37.100. It then is pre-buffered for playback.
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-8 mt-3 mt-md-0" style="transform: scale(1.55); transform-origin: center;">
+        {% include figure.html path="assets/img/android_aac.jpeg" title="example image" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption text-center">
+    AAC re-encoding
+</div>
+
+
+
+
+
+
+With audio passthrough you can significantly improve your playback by avoiding lossy re-encoding and reduce lag in time sensitive applications allowing you to use your soundbars to their full potential.
+
+
+
+### Behind the Scenes
+VLC is a beautiful, practical and modular software. Here is an explanation of the tasks happening to achieve this passthrough.
+
+Here is what we are trying to do to achieve passthrough:
+
+When you open a .aac or an AAC encoded .mp4a file,
+VLC uses a demuxer to separate different types of content which might be enclosed in the container e.g; subtitle files and the actual audio data.
+```
+[0000000114019000] main input debug: creating demux "mp4a", URL: file:///Users/advait/Downloads/twotigers.aac, path: /Users/advait/Downloads/twotigers.aac
+[000000016c9cabf0] main generic debug: looking for demux module matching "mp4a": 1 candidates
+[000060000103e4c0] es demux debug: detected format mp4a
+[000000016c9ca870] main generic debug: looking for packetizer module matching "any": 25 candidates
+```
+The packetizer module is then called
+```
+[0000000158eac080] mpeg4audio demux packetizer debug: running MPEG4 audio packetizer
+[0000000158eac080] mpeg4audio demux packetizer debug: AAC Type Unknown
+[000000016c9ca870] main generic debug: using packetizer module "mpeg4audio"
+```
+This packetizer module is responsible for interpreting the data within the AAC file.
+Whether it has an ADTS, LOAS/LATM header or not, and then passes the processed data blocks further.
+
+The blocks are then sent to the decoder.
+```
+[0000000149825a00] spdif decoder debug: spdif.c setting properties
+[0000000158f16dd0] main player debug: reusing audio output
+[0000000158e05780] main audio output debug: Entered aout_OutputNew
+[0000000158e05780] avsamplebuffer audio output debug: Entered Start
+```
+Now the decoder in spdif.c isn't an actual decoder but cleverly developed to forward the audio data to maintain the
+flow of data. This supposed decoder just forwards the data and sets the output properties.
+
+The OS specific audio output module then handles this data buffer.
+For this project I worked with Audiotrack for Android and Core Audio, AVSamplebuffer for MacOS and iOS.
+
+You can read some of my more in-depth blogs that might be helpful here:
+1. [Getting Started](https://advait-0.github.io/GSoC24/GSoC-Begins/)
+2. [Understanding the basics](https://advait-0.github.io/GSoC24/GSoC-Update1/)
+3. [.m is not just MATLAB (Obj-C basics)](https://advait-0.github.io/GSoC24/GSoC-Update2/)
+
+
+<br>
+
+## Contributions
+**Code clean-up in progress** 🧹🧹
+
+<!-- You can check my commits and code here:
+1. [Adding necessary libcamera addons to backend](https://github.com/opencv/opencv/commit/bfef36cec41571c62f383d92ee5fbc6a47673e24) 
+2. [Implement open functionality](https://github.com/opencv/opencv/commit/e8f2cc51aaa45ea4eb0e23273a3cc8b882ce84a2)
+3. [Add buffer allocation capabilities](https://github.com/opencv/opencv/commit/3bbbfff7d9487c99e2394ed97dc13a3356ee024e)
+4. [Add all necessary IVideoCapture functions framework](https://github.com/opencv/opencv/commit/796aaa2995d917cfedc3bf40201862303425bafd)
+5. [Add pixelformat and colour conversion capabilities](https://github.com/opencv/opencv/commit/ee070868e67a5d6c5348854527c401794e6eefb4)
+6. [Bug fixes and optimizations](https://github.com/opencv/opencv/commit/c7759e45e7cbff8e4654f0f3ed62ad93af95371f) -->
+
+<br>
+
+### Ongoing work
+The backend changes for MacOS, iOS and Android are mostly complete however we are still facing minor hiccups in achieving proper audio playback. \
+ We are currently in contact with the Apple developer team to tackle the issues involving their Core Audio API.
+
+
+<br>
+
+## Acknowledgements
+A very special thanks to my mentor Thomas Guillem for always answering my doubts and supporting me throughout.
+It was a great experience working with the him and getting to learn from his mentorship.
+I would also like to extend thanks to Jean-Baptiste Kempf and other members of the VideoLAN community who helped with my queries on irc.
+
+It was an honour to work with team VideoLAN, to develop for the player I have used almost my entire life. It makes you realize the power of libre open source :) 
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-4 mt-3 mt-md-0 text-center">
+        {% include figure.html path="assets/img/VLC_icon.png" title="VLC Icon" class="img-fluid rounded z-depth-1" %}
+    </div>
+    <div class="col-sm-4 mt-3 mt-md-0 text-center">
+        {% include figure.html path="assets/img/gsoc.png" title="GSoC Logo" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption text-center">
+    VLC is ❤️
+</div>
+
+
