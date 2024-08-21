@@ -220,7 +220,8 @@ enchanced audio as quality is often lost due to the decoding and re-encoding due
 
 <p>In our case considering VLC player, it doesn’t currently support AAC passthrough.</p>
 
-<p>Consider an AAC encoded 2 channel(stereo sound setup) sampled at 44.1KHz Whenever an AAC encoded stream is played from a container say .aac or .mp4a then we interpret the data in it whether they’re subtitles or actual audio.</p>
+<p>To understand what was previously happening,
+consider an AAC encoded 2 channel(stereo sound setup) sampled at 44.1KHz Whenever an AAC encoded stream is played from a container say .aac or .mp4a then we interpret the data in it whether they’re subtitles or actual audio.</p>
 
 <p>These samples are then packetized by a packetizer. A packetizer interprets the data headers which carry information about the stream that helps us in interpreting it correctly and helps us in synchronization.</p>
 
@@ -247,7 +248,7 @@ enchanced audio as quality is often lost due to the decoding and re-encoding due
 
 
 
-<p>The decoder then deciphers the information held by the buffers which in our case is the Lavc59.37.100. It then is pre-buffered for playback.</p>
+<p>The decoder then deciphers the information held by the buffers which in our example case is the Lavc59.37.100. It then is pre-buffered for playback.</p>
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0" style="transform: scale(1.55); transform-origin: center;">
@@ -304,7 +305,7 @@ Whether it has an ADTS, LOAS/LATM header or not, and then passes the processed d
 <p>Now the decoder in spdif.c isn’t an actual decoder but cleverly developed to forward the audio data to maintain the
 flow of data. This supposed decoder just forwards the data and sets the output properties.</p>
 
-<p>The OS specidic audio output module then handles this data buffer.
+<p>The OS specific audio output module then handles this data buffer.
 For this project I worked with Audiotrack for Android and Core Audio, AVSamplebuffer for MacOS and iOS.</p>
 
 <p>You can read some of my more in-depth blogs that might be helpful here:</p>
@@ -340,7 +341,7 @@ For this project I worked with Audiotrack for Android and Core Audio, AVSamplebu
 It was a great experience working with the him and getting to learn from his mentorship.
 I would also like to extend thanks to Jean-Baptiste Kempf and other members of the VideoLAN community who helped with my queries on irc.</p>
 
-<p>It was an honour to work with team VideoLAN, to develop for the player I have used almost my entire life. It makes you realize the power of libre open source.</p>
+<p>It was an honour to work with team VideoLAN, to develop for the player I have used almost my entire life. It makes you realize the power of libre open source :)</p>
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-4 mt-3 mt-md-0 text-center">
