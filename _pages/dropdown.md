@@ -8,6 +8,6 @@ children:
     - title: GSoC'23
       permalink: /GSoC/
     - title: GSoC'24
-      permalink: /blog/
+      permalink: /GSoC24/
     #   permalink: /projects/
 ---
