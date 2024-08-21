@@ -8,9 +8,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Google Summer of Code'23 | Advait S. Dhamorikar</title>
+    <title>Google Summer of Code'24 | Advait S. Dhamorikar</title>
     <meta name="author" content="Advait S. Dhamorikar">
-    <meta name="description" content="Final blog of my project integrating libcamera into OpenCV">
+    <meta name="description" content="Final blog of my project adding AAC via S/PDIF and Bluetooth passthrough">
     <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website">
 
 
@@ -31,7 +31,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://advait-0.github.io/GSoC23/Final-Report/">
+    <link rel="canonical" href="https://advait-0.github.io/GSoC24/Final-Report/">
     
     <!-- Dark Mode -->
     
@@ -66,9 +66,9 @@
   <body>
 <d-front-matter>
     <script async type="text/json">{
-      "title": "Google Summer of Code'23",
-      "description": "Final blog of my project integrating libcamera into OpenCV",
-      "published": "August 25, 2023",
+      "title": "Google Summer of Code'24",
+      "description": "Final blog of my project adding AAC via S/PDIF and Bluetooth passthrough",
+      "published": "August 22, 2024",
       "authors": [
         {
           "author": "Advait Dhamorikar",
@@ -166,8 +166,8 @@
     <div class="post distill">
 
       <d-title>
-        <h1>Google Summer of Code'23</h1>
-        <p>Final blog of my project integrating libcamera into OpenCV</p>
+        <h1>Google Summer of Code'24</h1>
+        <p>Final blog of my project adding AAC via S/PDIF and Bluetooth passthrough</p>
       </d-title>
 
       <d-byline></d-byline>
@@ -179,129 +179,189 @@
             <div><a href="#project-details">Project Details</a></div>
             <div><a href="#workflow-overview">Workflow Overview</a></div>
             <ul>
-              <li><a href="#adding-libcamera-support">Adding libcamera support</a></li>
-              <li><a href="#opencv-backend">OpenCV backend</a></li>
+              <li><a href="#what-is-passthrough-and-why-does-it-matter">What is passthrough and why does it matter?</a></li>
+              <li><a href="#behind-the-scenes">Behind the Scenes</a></li>
               
             </ul>
-<div><a href="#future-work">Future Work</a></div>
+<div><a href="#contributions">Contributions</a></div>
+            <div><a href="#future-work">Future Work</a></div>
             <div><a href="#acknowledgements">Acknowledgements</a></div>
             
           </nav>
         </d-contents>
 
-        <p>This is my Google Summer of Code 2023 project with libcamera.</p>
+        <p>This is my Google Summer of Code 2024 project with VideoLAN.</p>
 
-<p>It aims to move the current V4L2 implementation of accessing and controlling cameras in OpenCV to libcamera, this will allow for better functionality for more advanced and complex cameras. This will be done by creating a videoio plugin for OpenCV to support libcamera and then creating suitable classes and functions to add the desired functionality.</p>
+<p>VideoLAN is a not-for-profit organization that develops and maintains a lot of open source projects which are used by billions worldwide including VLC Player, libVLC, x264, x265 and more.<br>
+This project aims to add passthrough for the AAC codec for hardware decoding over S/PDIF and Bluetooth for
+enchanced audio as quality is often lost due to the decoding and re-encoding due to the lossy nature of the codec.</p>
 
 <h2 id="-project-details-"><span> Project Details </span></h2>
 
 <p><span style="color:#B509AC"> Contributor Name:</span> Advait Dhamorikar</p>
 
-<p><span style="color:#B509AC"> Mentors:</span> Umang Jain, Paul Elder</p>
+<p><span style="color:#B509AC"> Mentors:</span> Thomas Guillem</p>
 
-<p><span style="color:#B509AC"> Organization:</span> libcamera</p>
+<p><span style="color:#B509AC"> Organization:</span> VideoLAN</p>
 
-<p><span style="color:#B509AC"> Project:</span> Integrating libcamera into OpenCV</p>
+<p><span style="color:#B509AC"> Project:</span> Adding AAC via S/PDIF and Bluetooth passthrough</p>
 
 <p><span style="color:#B509AC"> Links:</span></p>
 <ul>
-  <li><a href="https://github.com/advait-0/opencv/tree/libcamera-final" rel="external nofollow noopener" target="_blank">Github</a></li>
-  <li><a href="https://summerofcode.withgoogle.com/archive/2023/projects/lKttObKa" rel="external nofollow noopener" target="_blank">Project Page</a></li>
+  <li><a href="https://code.videolan.org/advait-0/vlc" rel="external nofollow noopener" target="_blank">Git</a></li>
+  <li><a href="https://summerofcode.withgoogle.com/programs/2024/projects/eyxxsgo0" rel="external nofollow noopener" target="_blank">Project Page</a></li>
 </ul>
 
 <p><br></p>
 
 <h2 id="workflow-overview">Workflow Overview</h2>
-<p>OpenCV is a popular computer-vision library used that offers ease of usage,
-libcamera is a camera-stack that can handle the complexity of modern embedded cameras with support for open and closed source IPAs.
-The project aimed to integrate libcamera into the OpenCV backend.</p>
+<h4 id="what-is-passthrough-and-why-does-it-matter">What is passthrough and why does it matter?</h4>
+<p>Passthrough is sending your digital data to be decoded by your receiver hardware which could include your headphones, earphones or amplifier instead of decoding it at the source.</p>
 
-<h3 id="adding-libcamera-support">Adding libcamera support</h3>
-<p>If you have libcamera installed<d-footnote>https://libcamera.org/getting-started.html</d-footnote> and use the libcamera backend when creating a VideoCapture object using</p>
+<p>In our case considering VLC player, it doesn’t currently support AAC passthrough.</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">cv</span><span class="p">::</span><span class="nx">VideoCapture</span> <span class="nf">cap</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">cv</span><span class="p">::</span><span class="nx">CAP_LIBCAMERA</span><span class="p">)</span></code></pre></figure>
+<p>Consider an AAC encoded 2 channel(stereo sound setup) sampled at 44.1KHz Whenever an AAC encoded stream is played from a container say .aac or .mp4a then we interpret the data in it whether they’re subtitles or actual audio.</p>
 
-<p>and if you had used this flag when using CMake</p>
+<p>These samples are then packetized by a packetizer. A packetizer interprets the data headers which carry information about the stream that helps us in interpreting it correctly and helps us in synchronization.</p>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">-</span><span class="nx">D</span> <span class="nx">WITH_LIBCAMERA</span><span class="o">=</span><span class="nx">ON</span></code></pre></figure>
 
-<p>macros have been setup which check if your installation is working, thus the</p>
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">HAVE_LIBCAMERA</span></code></pre></figure>
-<p>flag will be set to true.</p>
 
-<h3 id="opencv-backend">OpenCV backend</h3>
-<p>The call to libcamera is made primarily by the <code class="language-plaintext highlighter-rouge">cap_libcamera.cpp</code> which handles all of the function calls,
-Where the Class <code class="language-plaintext highlighter-rouge">CvCapture_libcamera_proxy</code> is derived from OpenCVs <code class="language-plaintext highlighter-rouge">IVideoCapture</code> Class its member functions include:</p>
-<ul>
-  <li>Constructor: This is where the Camera Manager thread is started and <code class="language-plaintext highlighter-rouge">cam_init</code> is called which is responsible for error handling and then finally opening the camera.</li>
-  <li>
-<code class="language-plaintext highlighter-rouge">open(int index)</code>: The camera of the specified index gets acquired here, a configuration for it is generated based on a chosen streamrole which include ViewFinder, VideoRecording, Raw or StillCapture. We can make additional changes to the configuration here like choosing the desired pixelformat(YUYV, MJPEG, NV12 etc) and setting the dimensions of the stream. The configuration if supported is then validated and buffer allocation is done.
-Created requests are queued to camera.</li>
-  <li>
-<code class="language-plaintext highlighter-rouge">grabFrame()</code>: Used to get the frames from the camera.</li>
-  <li>
-<code class="language-plaintext highlighter-rouge">retrieveFrame()</code>: Processes the frames retrieved from the queue one by one calls the convertToRgb() functions which converts the planar data of various stream format into supported BGR/RGB, queuing the buffers for reuse again.
-    <ul>
-      <li>
-<code class="language-plaintext highlighter-rouge">convertToRgb()</code>: This function checks the streamconfig for the  format and finds its buffers. It then <code class="language-plaintext highlighter-rouge">mmap</code>s those buffers data and returns a file descriptor.
-  The mapped data is then processed according to it’s pixelformat and returned to a <code class="language-plaintext highlighter-rouge">cv::Mat container</code>.</li>
-    </ul>
-  </li>
-</ul>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEC 61937 Frame Structure</title>
+    <style>
+        figure {
+            text-align: center;
+        }
+        img {
+            width: 70%; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+    </style>
 
-<p><br></p>
 
-<h2 id="contributions">Contributions</h2>
-<p>You can check my commits and code here:</p>
-<ol>
-  <li><a href="https://github.com/opencv/opencv/commit/bfef36cec41571c62f383d92ee5fbc6a47673e24" rel="external nofollow noopener" target="_blank">Adding necessary libcamera addons to backend</a></li>
-  <li><a href="https://github.com/opencv/opencv/commit/e8f2cc51aaa45ea4eb0e23273a3cc8b882ce84a2" rel="external nofollow noopener" target="_blank">Implement open functionality</a></li>
-  <li><a href="https://github.com/opencv/opencv/commit/3bbbfff7d9487c99e2394ed97dc13a3356ee024e" rel="external nofollow noopener" target="_blank">Add buffer allocation capabilities</a></li>
-  <li><a href="https://github.com/opencv/opencv/commit/796aaa2995d917cfedc3bf40201862303425bafd" rel="external nofollow noopener" target="_blank">Add all necessary IVideoCapture functions framework</a></li>
-  <li><a href="https://github.com/opencv/opencv/commit/ee070868e67a5d6c5348854527c401794e6eefb4" rel="external nofollow noopener" target="_blank">Add pixelformat and colour conversion capabilities</a></li>
-  <li><a href="https://github.com/opencv/opencv/commit/c7759e45e7cbff8e4654f0f3ed62ad93af95371f" rel="external nofollow noopener" target="_blank">Bug fixes and optimizations</a></li>
-</ol>
+    <figure>
+        <img src="/assets/img/decode_log.png">
+        <figcaption>Initial AAC playback log.</figcaption>
+    </figure>
 
-<p><br></p>
 
-<h3 id="known-issues">Known issues</h3>
-<p>The backend has been integrated and supports majority of the IVideoCapture functions and the stream data is successfully being mmaped, however the format and colour conversion of this mapped data is still in testing for YUYV at the time of writing this blog.</p>
 
-<h2 id="future-work">Future Work</h2>
-<ul class="task-list">
-  <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled> Add support for additional formats like NV12.</li>
-  <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled> Utilize dma to have a zero copy workflow.</li>
-</ul>
-
-<p><br></p>
-
-<h2 id="acknowledgements">Acknowledgements</h2>
-<p>A very special thanks to my mentors Umang Jain(uajain), Paul Elder (epoll) for always answering my doubts and supporting me throughout.
-It was a great experience working with them and getting to learn so many new things as a part of the Google Summer of Code.
-I would also like to extend thanks to Laurent Pinchart(pinchartl), Kieran Bingham(kbingham) and other members of the libcamera organization who helped with my queries.</p>
+<p>The decoder then deciphers the information held by the buffers which in our case is the Lavc59.37.100. It then is pre-buffered for playback.</p>
 
 <div class="row justify-content-sm-center">
-    <div class="col-sm-8 mt-3 mt-md-0">
+    <div class="col-sm-8 mt-3 mt-md-0" style="transform: scale(1.55); transform-origin: center;">
         <figure>
 
   <picture>
     
-    <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/assets/img/libcamera-480.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/assets/img/libcamera-800.webp"></source>
-    <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/assets/img/libcamera-1400.webp"></source>
+    <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/assets/img/android_aac-480.webp"></source>
+    <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/assets/img/android_aac-800.webp"></source>
+    <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/assets/img/android_aac-1400.webp"></source>
     
 
     <!-- Fallback to the original file -->
-    <img src="/assets/img/libcamera.png" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="example image" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
+    <img src="/assets/img/android_aac.jpeg" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="example image" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
 
   </picture>
 
 </figure>
 
     </div>
-    <div class="col-sm-3 mt-3 mt-md-0">
+</div>
+<div class="caption text-center">
+    AAC re-encoding
+</div>
+
+<p>With audio passthrough you can significantly improve your playback by avoiding lossy re-encoding and reduce lag in time sensitive applications allowing you to use your soundbars to their full potential.</p>
+
+<h3 id="behind-the-scenes">Behind the Scenes</h3>
+<p>VLC is a beautiful, practical and modular software. Here is an explanation of the tasks happening to achieve this passthrough.</p>
+
+<p>Here is what we are trying to do to achieve passthrough:</p>
+
+<p>When you open a .aac or an AAC encoded .mp4a file,
+VLC uses a demuxer to separate different types of content which might be enclosed in the container e.g; subtitle files and the actual audio data.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0000000114019000] main input debug: creating demux "mp4a", URL: file:///Users/advait/Downloads/twotigers.aac, path: /Users/advait/Downloads/twotigers.aac
+[000000016c9cabf0] main generic debug: looking for demux module matching "mp4a": 1 candidates
+[000060000103e4c0] es demux debug: detected format mp4a
+[000000016c9ca870] main generic debug: looking for packetizer module matching "any": 25 candidates
+</code></pre></div></div>
+<p>The packetizer module is then called</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0000000158eac080] mpeg4audio demux packetizer debug: running MPEG4 audio packetizer
+[0000000158eac080] mpeg4audio demux packetizer debug: AAC Type Unknown
+[000000016c9ca870] main generic debug: using packetizer module "mpeg4audio"
+</code></pre></div></div>
+<p>This packetizer module is responsible for interpreting the data within the AAC file.
+Whether it has an ADTS, LOAS/LATM header or not, and then passes the processed data blocks further.</p>
+
+<p>The blocks are then sent to the decoder.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0000000149825a00] spdif decoder debug: spdif.c setting properties
+[0000000158f16dd0] main player debug: reusing audio output
+[0000000158e05780] main audio output debug: Entered aout_OutputNew
+[0000000158e05780] avsamplebuffer audio output debug: Entered Start
+</code></pre></div></div>
+<p>Now the decoder in spdif.c isn’t an actual decoder but cleverly developed to forward the audio data to maintain the
+flow of data. This supposed decoder just forwards the data and sets the output properties.</p>
+
+<p>The OS specidic audio output module then handles this data buffer.
+For this project I worked with Audiotrack for Android and Core Audio, AVSamplebuffer for MacOS and iOS.</p>
+
+<p>You can read some of my more in-depth blogs that might be helpful here:</p>
+<ol>
+  <li><a href="https://advait-0.github.io/GSoC24/GSoC-Begins/">Getting Started</a></li>
+  <li><a href="https://advait-0.github.io/GSoC24/GSoC-Update1/">Understanding the basics</a></li>
+  <li><a href="https://advait-0.github.io/GSoC24/GSoC-Update2/">.m is not just MATLAB (Obj-C basics)</a></li>
+</ol>
+
+<p><br></p>
+
+<h2 id="contributions">Contributions</h2>
+<p><strong>Code clean-up in progress</strong> 🧹🧹</p>
+
+<!-- You can check my commits and code here:
+1. [Adding necessary libcamera addons to backend](https://github.com/opencv/opencv/commit/bfef36cec41571c62f383d92ee5fbc6a47673e24) 
+2. [Implement open functionality](https://github.com/opencv/opencv/commit/e8f2cc51aaa45ea4eb0e23273a3cc8b882ce84a2)
+3. [Add buffer allocation capabilities](https://github.com/opencv/opencv/commit/3bbbfff7d9487c99e2394ed97dc13a3356ee024e)
+4. [Add all necessary IVideoCapture functions framework](https://github.com/opencv/opencv/commit/796aaa2995d917cfedc3bf40201862303425bafd)
+5. [Add pixelformat and colour conversion capabilities](https://github.com/opencv/opencv/commit/ee070868e67a5d6c5348854527c401794e6eefb4)
+6. [Bug fixes and optimizations](https://github.com/opencv/opencv/commit/c7759e45e7cbff8e4654f0f3ed62ad93af95371f) -->
+
+<p><br></p>
+
+<h3 id="ongoing-work">Ongoing work</h3>
+<p>The backend changes for MacOS, iOS and Android are mostly complete however we are still facing minor hiccups in achieving proper audio playback. <br>
+ We are currently in contact with the Apple developer team to tackle the issues involving their Core Audio API.</p>
+
+<p><br></p>
+
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>A very special thanks to my mentor Thomas Guillem for always answering my doubts and supporting me throughout.
+It was a great experience working with the him and getting to learn from his mentorship.
+I would also like to extend thanks to Jean-Baptiste Kempf and other members of the VideoLAN community who helped with my queries on irc.</p>
+
+<p>It was an honour to work with team VideoLAN, to develop for the player I have used almost my entire life. It makes you realize the power of libre open source.</p>
+
+<div class="row justify-content-sm-center">
+    <div class="col-sm-4 mt-3 mt-md-0 text-center">
+        <figure>
+
+  <picture>
+    
+    <source class="responsive-img-srcset" media="(max-width: 480px)" srcset="/assets/img/VLC_icon-480.webp"></source>
+    <source class="responsive-img-srcset" media="(max-width: 800px)" srcset="/assets/img/VLC_icon-800.webp"></source>
+    <source class="responsive-img-srcset" media="(max-width: 1400px)" srcset="/assets/img/VLC_icon-1400.webp"></source>
+    
+
+    <!-- Fallback to the original file -->
+    <img src="/assets/img/VLC_icon.png" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="VLC Icon" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
+
+  </picture>
+
+</figure>
+
+    </div>
+    <div class="col-sm-4 mt-3 mt-md-0 text-center">
         <figure>
 
   <picture>
@@ -312,7 +372,7 @@ I would also like to extend thanks to Laurent Pinchart(pinchartl), Kieran Bingha
     
 
     <!-- Fallback to the original file -->
-    <img src="/assets/img/gsoc.png" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="example image" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
+    <img src="/assets/img/gsoc.png" class="img-fluid rounded z-depth-1" width="auto" height="auto" title="GSoC Logo" onerror="this.onerror=null; $('.responsive-img-srcset').remove();">
 
   </picture>
 
@@ -320,8 +380,8 @@ I would also like to extend thanks to Laurent Pinchart(pinchartl), Kieran Bingha
 
     </div>
 </div>
-<div class="caption">
-    libcamera + GSoC = :-)
+<div class="caption text-center">
+    VLC is ❤️
 </div>
 
 
