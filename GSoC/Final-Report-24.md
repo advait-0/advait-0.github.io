@@ -154,13 +154,12 @@ You can read some of my more in-depth blogs that might be helpful here:
 ## Contributions
 **Code clean-up in progress** 🧹🧹
 
-<!-- You can check my commits and code here:
-1. [Adding necessary libcamera addons to backend](https://github.com/opencv/opencv/commit/bfef36cec41571c62f383d92ee5fbc6a47673e24) 
-2. [Implement open functionality](https://github.com/opencv/opencv/commit/e8f2cc51aaa45ea4eb0e23273a3cc8b882ce84a2)
-3. [Add buffer allocation capabilities](https://github.com/opencv/opencv/commit/3bbbfff7d9487c99e2394ed97dc13a3356ee024e)
-4. [Add all necessary IVideoCapture functions framework](https://github.com/opencv/opencv/commit/796aaa2995d917cfedc3bf40201862303425bafd)
-5. [Add pixelformat and colour conversion capabilities](https://github.com/opencv/opencv/commit/ee070868e67a5d6c5348854527c401794e6eefb4)
-6. [Bug fixes and optimizations](https://github.com/opencv/opencv/commit/c7759e45e7cbff8e4654f0f3ed62ad93af95371f) -->
+You can check my commits and code here:
+1. [Add AAC passthrough for MacOS and iOS](https://code.videolan.org/advait-0/vlc/-/merge_requests/2) 
+2. [Android passthrough support](https://code.videolan.org/advait-0/vlc/-/merge_requests/1)
+3. [Check for empty buffers being passed](https://code.videolan.org/videolan/vlc/-/commit/9b737741e3afa3cd58e6804e7a33283839276fb8)
+4. [Add MacOS build instructions]()
+
 
 <br>
 
