@@ -60,8 +60,7 @@ Passthrough is sending your digital data to be decoded by your receiver hardware
 
 In our case considering VLC player, it doesn’t currently support AAC passthrough.
 
-To understand what was previously happening,
-consider an AAC encoded 2 channel(stereo sound setup) sampled at 44.1KHz Whenever an AAC encoded stream is played from a container say .aac or .mp4a then we interpret the data in it whether they're subtitles or actual audio.
+Consider an AAC encoded 2 channel(stereo sound setup) sampled at 44.1KHz Whenever an AAC encoded stream is played from a container say .aac or .mp4a then we interpret the data in it whether they're subtitles or actual audio.
 
 These samples are then packetized by a packetizer. A packetizer interprets the data headers which carry information about the stream that helps us in interpreting it correctly and helps us in synchronization.
 
@@ -88,7 +87,7 @@ These samples are then packetized by a packetizer. A packetizer interprets the d
 </body>
 </html>
 
-The decoder then deciphers the information held by the buffers which in our example case is the Lavc59.37.100. It then is pre-buffered for playback.
+The decoder then deciphers the information held by the buffers which in our case is the Lavc59.37.100. It then is pre-buffered for playback.
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0" style="transform: scale(1.55); transform-origin: center;">
@@ -140,7 +139,7 @@ The blocks are then sent to the decoder.
 Now the decoder in spdif.c isn't an actual decoder but cleverly developed to forward the audio data to maintain the
 flow of data. This supposed decoder just forwards the data and sets the output properties.
 
-The OS specific audio output module then handles this data buffer.
+The OS specidic audio output module then handles this data buffer.
 For this project I worked with Audiotrack for Android and Core Audio, AVSamplebuffer for MacOS and iOS.
 
 You can read some of my more in-depth blogs that might be helpful here:
@@ -152,13 +151,13 @@ You can read some of my more in-depth blogs that might be helpful here:
 <br>
 
 ## Contributions
-**Code clean-up in progress** 🧹🧹
+
 
 You can check my commits and code here:
-1. [Add AAC passthrough for MacOS and iOS](https://code.videolan.org/advait-0/vlc/-/merge_requests/2) 
-2. [Android passthrough support](https://code.videolan.org/advait-0/vlc/-/merge_requests/1)
+1. [Add AAC passthrough avsb componenets for MacOS and iOS](https://code.videolan.org/advait-0/vlc/-/merge_requests/9) 
+2. [Android audiotrack passthrough components](https://code.videolan.org/advait-0/vlc/-/merge_requests/10)
 3. [Check for empty buffers being passed](https://code.videolan.org/videolan/vlc/-/commit/9b737741e3afa3cd58e6804e7a33283839276fb8)
-4. [Add MacOS build instructions]()
+4. [Add Android VLC 4.0 build instructions](https://code.videolan.org/advait-0/vlc/-/merge_requests/11)
 
 
 <br>
