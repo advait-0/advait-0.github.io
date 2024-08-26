@@ -220,8 +220,7 @@ enchanced audio as quality is often lost due to the decoding and re-encoding due
 
 <p>In our case considering VLC player, it doesn’t currently support AAC passthrough.</p>
 
-<p>To understand what was previously happening,
-consider an AAC encoded 2 channel(stereo sound setup) sampled at 44.1KHz Whenever an AAC encoded stream is played from a container say .aac or .mp4a then we interpret the data in it whether they’re subtitles or actual audio.</p>
+<p>Consider an AAC encoded 2 channel(stereo sound setup) sampled at 44.1KHz Whenever an AAC encoded stream is played from a container say .aac or .mp4a then we interpret the data in it whether they’re subtitles or actual audio.</p>
 
 <p>These samples are then packetized by a packetizer. A packetizer interprets the data headers which carry information about the stream that helps us in interpreting it correctly and helps us in synchronization.</p>
 
@@ -248,7 +247,7 @@ consider an AAC encoded 2 channel(stereo sound setup) sampled at 44.1KHz Wheneve
 
 
 
-<p>The decoder then deciphers the information held by the buffers which in our example case is the Lavc59.37.100. It then is pre-buffered for playback.</p>
+<p>The decoder then deciphers the information held by the buffers which in our case is the Lavc59.37.100. It then is pre-buffered for playback.</p>
 
 <div class="row justify-content-sm-center">
     <div class="col-sm-8 mt-3 mt-md-0" style="transform: scale(1.55); transform-origin: center;">
@@ -305,7 +304,7 @@ Whether it has an ADTS, LOAS/LATM header or not, and then passes the processed d
 <p>Now the decoder in spdif.c isn’t an actual decoder but cleverly developed to forward the audio data to maintain the
 flow of data. This supposed decoder just forwards the data and sets the output properties.</p>
 
-<p>The OS specific audio output module then handles this data buffer.
+<p>The OS specidic audio output module then handles this data buffer.
 For this project I worked with Audiotrack for Android and Core Audio, AVSamplebuffer for MacOS and iOS.</p>
 
 <p>You can read some of my more in-depth blogs that might be helpful here:</p>
@@ -318,12 +317,15 @@ For this project I worked with Audiotrack for Android and Core Audio, AVSamplebu
 <p><br></p>
 
 <h2 id="contributions">Contributions</h2>
-<p><strong>Code clean-up in progress</strong> 🧹🧹</p>
 
 <p>You can check my commits and code here:</p>
 <ol>
-  <li><a href="https://code.videolan.org/advait-0/vlc/-/merge_requests/2" rel="external nofollow noopener" target="_blank">Add AAC passthrough for MacOS and iOS</a></li>
-  <li><a href="https://code.videolan.org/advait-0/vlc/-/merge_requests/1" rel="external nofollow noopener" target="_blank">Android passthrough support</a></li>
+  <li><a href="https://code.videolan.org/advait-0/vlc/-/merge_requests/3" rel="external nofollow noopener" target="_blank">Add AAC passthrough avsb componenets for MacOS and iOS</a></li>
+  <li><a href="https://code.videolan.org/advait-0/vlc/-/merge_requests/6" rel="external nofollow noopener" target="_blank">Android audiotrack passthrough</a></li>
+  <li><a href="https://code.videolan.org/advait-0/vlc/-/merge_requests/4" rel="external nofollow noopener" target="_blank">Core libVLC components to enable AAC pt. for Mac</a></li>
+  <li><a href="https://code.videolan.org/advait-0/vlc/-/merge_requests/7" rel="external nofollow noopener" target="_blank">Core components for Android passthrough</a></li>
+  <li><a href="https://code.videolan.org/advait-0/vlc/-/merge_requests/5" rel="external nofollow noopener" target="_blank">Add debugging info for MacOS and iOS</a></li>
+  <li><a href="https://code.videolan.org/advait-0/vlc/-/merge_requests/8" rel="external nofollow noopener" target="_blank">Debug messages for Android logcat</a></li>
   <li><a href="https://code.videolan.org/videolan/vlc/-/commit/9b737741e3afa3cd58e6804e7a33283839276fb8" rel="external nofollow noopener" target="_blank">Check for empty buffers being passed</a></li>
   <li><a href="">Add MacOS build instructions</a></li>
 </ol>
