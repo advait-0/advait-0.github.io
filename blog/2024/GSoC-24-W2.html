@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trying to explain my project</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    body {
+      font-family: "IBM Plex Mono", monospace;
+      background: #fdfdfd;
+      color: #222;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      text-align: justify;
+    }
+
+    a {
+      color: #005cc5;
+    }
+
+    pre, code {
+      background: #f4f4f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    nav {
+      margin-bottom: 2rem;
+    }
+    nav a {
+      margin-right: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/index.html">home</a>
+    <a href="/blog/">blog</a>
+    <a href="/photos/">photos</a>
+  </nav>
+
+  <p>My project “Adding AAC via S/PDIF and Bluetooth” is one that really
+  teaches me a lot about multimedia development and at the same time
+  allows me to apply the knowledge i’ve learnt in college. I’ll try to
+  explain some aspects and updates about my work through this blog.</p>
+  <h2 id="aac">AAC</h2>
+  <p>AAC is the Advanced Audio Codec developed for lossy digital audio
+  compression. AAC has been standardized by ISO and IEC as part of the
+  MPEG-2 and MPEG-4 specifications. AAC encoded content is often used in
+  MPEG-4 .mp4 and .mp4a(audio only containers). Containers can be
+  considered as storage mediums for multiple data streams such as video,
+  audio and subtitle files. These containers such as .mkv (developed by
+  one of the mentors at VLC!) then has to have it’s data demuxed and
+  then decoded. AAC uses a modified direct cosine transform (DCT)
+  algorithm for encoding the analog signal.</p>
+  <h2 id="what-is-passthrough">What is Passthrough?</h2>
+  <p>When a signal is allowed to move from the source to the destination
+  without altering its form it is known as passthrough. When using
+  HDMI(High Definition Media Interface with S/PDIF frames) or Bluetooth
+  for transmission the input signal is often altered. Without this
+  passthrough it may happen that you may get a lesser fidelity sound. It
+  might be seen with 3D playback as supported HDMI’s might allow 3D
+  playback with surround sound while unsupported versions might block 3D
+  playback. For the initial stage of the project I am working on the
+  passthrough for Android using the Audiotrack API.</p>
+  <h3 id="what-is-currently-happening">What is currently happening?</h3>
+  <p>In our case considering VLC player, VLC doesn’t currently support
+  AAC passthrough.</p>
+  <p>Consider an AAC encoded 2 channel(stereo sound setup) sampled at
+  44.1KHz Whenever an AAC encoded stream is played from a container say
+  .aac or .mp4a then firstly the demux is called which then separates
+  the audio stream and looks for a subtitle stream for music lyrics.</p>
+  <p>These samples are then packetized by a packetizer. Some containers
+  (like AVI) cannot distinguish between raw samples and those with
+  headers. Therefore, they forward these samples to a packetizer. The
+  packetizer’s role here is to detect the presence of these headers and
+  properly handle or strip them, preparing the stream for the next stage
+  (e.g., decoding or remuxing).</p>
+  <p>These packets are then passed to the decoder, the decoding is
+  handled by ffmpeg’s decoding algorithms which in our case is the
+  Lavc59.37.100. It then is pre-buffered for playback.</p>
+  <p>There are currently 3 different methods for audio output on
+  Android: 1. OpenSLES - not used by default 2. AudioTrack - legacy and
+  supports passthrough 3. AAudio - newer faster and in development</p>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+  IEC 61937 Frame Structure
+  </title>
+  <style>
+          figure {
+              text-align: center;
+          }
+          img {
+              width: 70%; /* Adjust the width as needed */
+              height: auto; /* Maintain aspect ratio */
+          }
+      </style>
+  </head>
+  <body>
+  <figure>
+  <img src="/assets/img/decode_log.png">
+  <figcaption>
+  Initial AAC playback log.
+  </figcaption>
+  </figure>
+  </body>
+  </html>
+  <p>We are working on the AudioTrack API for this project.</p>
+  <h3 id="what-am-i-working-on">What am I working on?</h3>
+  <p>I am working to avoid decoding the signal and sending a PCM output
+  to amplifiers instead of the original AAC.</p>
+  <p>Here are a few terminologies to help you understand better:</p>
+  <p><strong>Sample</strong>: The sampling rate determines the number of
+  samples taken per second. For a sampling rate of 44.1KHz we take 44100
+  samples every second. According to the Nyquist theorem, to accurately
+  reproduce a signal, the sampling rate must be at least twice the
+  highest frequency present in the signal. For human hearing, the
+  maximum frequency is about 20 kHz, so 44.1 kHz is more than sufficient
+  for audio applications.</p>
+  <p><strong>Channel</strong>: An audio channel is a single stream of
+  audio information. Each channel can carry a separate sound signal, and
+  when multiple channels are combined, they create a spatial audio
+  experience for the listener.</p>
+  <p>The most common configurations are mono audio(single channel),
+  stereo 2.0, 5.1 and 7.1.</p>
+  <p>The first digit corresponds to the full bandwidth channels(left,
+  center, right, left surround, right surround) and the digit after the
+  decimal signifies the low-frequency channel(subwoofer) for bass.</p>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.8">
+  <title>
+  IEC 61937 Frame Structure
+  </title>
+  <style>
+          figure {
+              text-align: center;
+          }
+          img {
+              width: 60%; /* Adjust the width as needed */
+              height: auto; /* Maintain aspect ratio */
+          }
+      </style>
+  </head>
+  <body>
+  <figure>
+  <img src="https://help.apple.com/assets/6578E9988C0AF588E10B7A50/6578E9992A748263270FFD12/en_US/c1f378805b3a8857af32980da150de0b.png" alt="General Channel Configurations" style="width: 50%; height: auto;">
+  </figure>
+  </body>
+  </html>
+  <p><strong>Frame</strong>: A frame is defined as the number of samples
+  * the number of channels.</p>
+  <p>Let us consider the quantization bit depth of one sample as 16 bit,
+  hence 1 sample occupies 2 bytes. Therefore for a stereo setup with 1
+  sample each of 2 channels. As per our frame definition it will hold 2
+  samples, therefore our <strong>bytes per frame</strong> comes out to
+  be 4.</p>
+  <p><strong>Buffer</strong>: The native method typically uses a target
+  buffer duration to ensure smooth playback, this buffer queues the data
+  in memory. This duration can vary but is often around 100 to 200
+  milliseconds. This duration ensures that there is enough buffered
+  audio data to handle fluctuations in data delivery without causing
+  underflows.</p>
+  <p><strong>Buffer size</strong> = Frame size * (Sample rate * Target
+  duration)</p>
+  <p>The general workflow begins by reading the audio file and opening
+  the ES(Elementary stream) handler which initializes the demux
+  structures.</p>
+  <p>It then calls the S/PDIF pass-through decoder, which acts like a
+  fake codec just to forward the encoded data. Support for MP4A was
+  added to this<br />
+  <code>case VLC_CODEC_MP4A</code></p>
+  <p>It then sets the <code>decoder_t *p_dec</code> properties like the
+  codec, profile and the format.</p>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+  log
+  </title>
+  <style>
+          figure {
+              text-align: center;
+          }
+          img {
+              width: 100%; /* Adjust the width as needed */
+              height: auto; /* Maintain aspect ratio */
+          }
+      </style>
+  </head>
+  <body>
+  <figure>
+  <img src="/assets/img/Audiotrack_logcat2.jpeg">
+  <figcaption>
+  Initial AAC playback log.
+  </figcaption>
+  </figure>
+  </body>
+  </html>
+  <p>An audio output stream is then started and then Start from device.c
+  is executed. This function is responsible for choosing the best API
+  for aout. As discussed above it chooses from AAudio, AudioTrack and
+  OpenSLES. For our passthrough cases and scenario it chooses the
+  AudioTrack API initially by using a function pointer.</p>
+  <p>As seen in our format-&gt;i_format in the logs we can see that the
+  detected format 1630826605 corresponds to FourCC for mp4a. FourCC(Four
+  Character Code) is a sequence of four bytes used to uniquely identify
+  data formats, such as video or audio codecs, in multimedia files. It
+  is commonly used in container formats like AVI, MP4, and QuickTime to
+  specify the codec used for encoding the media content.</p>
+  <p>audiotrack.c is then called which where the
+  <code>b_try_passthrough</code> bool flag is set if the condition for
+  the Android Audio Device type is met as Encoded.</p>
+  <p>The <code>i_bytes_per_frame</code> defined in the struct
+  <code>audio_format_t</code> as discussed above defined for compressed
+  frame are extracted to be 364 which is unreasonably high and one of
+  the culprits for our failing passthrough.</p>
+  <p>We are testing with AAC encode 2 channel stereo sound at 44.1KHz.
+  If passthrough is good to go StartPassthroughFmt calls the
+  GetPassthroughFmt for configuring the format, channels and other
+  parameters. We then configure and create Android AudioTrack using the
+  Java Native Interface(JNI)</p>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+  log
+  </title>
+  <style>
+          figure {
+              text-align: center;
+          }
+          img {
+              width: 100%; /* Adjust the width as needed */
+              height: auto; /* Maintain aspect ratio */
+          }
+      </style>
+  </head>
+  <body>
+  <figure>
+  <img src="/assets/img/Audiotrack_logcat.jpeg">
+  <figcaption>
+  Initial AAC playback log.
+  </figcaption>
+  </figure>
+  </body>
+  </html>
+  <p>Android AOSP’s internal function then returns the minimum buffer
+  size for our configuration which is calculated using the method given
+  above adding some additional buffer margin.</p>
+  <p>However post this I am encountering an error where Java throws an
+  exception <code>Invalid audio buffer size</code>.</p>
+  <p>Investigating this in the Android codebase one can see</p>
+  <div class="sourceCode" id="cb1"><pre
+  class="sourceCode java"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a> <span class="kw">private</span> <span class="dt">void</span> <span class="fu">audioBuffSizeCheck</span><span class="op">(</span><span class="dt">int</span> audioBufferSize<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>        <span class="co">// NB: this section is only valid with PCM or IEC61937 data.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">//     To update when supporting compressed formats</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> frameSizeInBytes<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span><span class="bu">AudioFormat</span><span class="op">.</span><span class="fu">isEncodingLinearFrames</span><span class="op">(</span>mAudioFormat<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            frameSizeInBytes <span class="op">=</span> mChannelCount <span class="op">*</span> <span class="bu">AudioFormat</span><span class="op">.</span><span class="fu">getBytesPerSample</span><span class="op">(</span>mAudioFormat<span class="op">);</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>            frameSizeInBytes <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">((</span>audioBufferSize <span class="op">%</span> frameSizeInBytes <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">||</span> <span class="op">(</span>audioBufferSize <span class="op">&lt;</span> <span class="dv">1</span><span class="op">))</span> <span class="op">{</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">IllegalArgumentException</span><span class="op">(</span><span class="st">&quot;Invalid audio buffer size.&quot;</span><span class="op">);</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        mNativeBufferSizeInBytes <span class="op">=</span> audioBufferSize<span class="op">;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        mNativeBufferSizeInFrames <span class="op">=</span> audioBufferSize <span class="op">/</span> frameSizeInBytes<span class="op">;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
+  <p>We can see that it is because the modulo division is failing as the
+  given buffer size of 35440 isn’t divisible by our frame size in bytes.
+  This is the issue I’m currently working on and I hope the Android AAC
+  passthrough will be enabled really soon!</p>
+  <h3 id="acknowledgement">Acknowledgement</h3>
+  <p>Massive thanks to my mentor Thomas Guillem for always guiding me
+  whenever I have doubts and I’m stuck, my learning experience has been
+  great under his mentorship.</p>
+  <p>Thanks for reading my update blog! I’ll be back soon.</p>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Another GSoC?</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    body {
+      font-family: "IBM Plex Mono", monospace;
+      background: #fdfdfd;
+      color: #222;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      text-align: justify;
+    }
+
+    a {
+      color: #005cc5;
+    }
+
+    pre, code {
+      background: #f4f4f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    nav {
+      margin-bottom: 2rem;
+    }
+    nav a {
+      margin-right: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/index.html">home</a>
+    <a href="/blog/">blog</a>
+    <a href="/photos/">photos</a>
+  </nav>
+
+  <h2 id="pre-gsoc">Pre-GSoC</h2>
+  <p>After my last GSoC, I was really inclined to learn more about
+  multimedia development. So, I started looking for opportunities in the
+  industry. However, lady luck had other plans. Despite interviewing
+  with some tech giants, I did not secure an internship.</p>
+  <p>Given the situation, my best option was to participate in the
+  Google Summer of Code again. I didn’t want to spend my summer doing a
+  job I didn’t like, one that would offer an inferior learning
+  experience. I started looking for organizations that matched my
+  interests, and two of them were VideoLAN and OpenCV.</p>
+  <p>Fast forward two months, and lady luck finally smiled upon me. I
+  was accepted as a contributor by both VideoLAN and OpenCV and had to
+  choose which organization I wanted to work with. After giving it a lot
+  of thought, I chose to work with VideoLAN for a new challenge and to
+  learn something new.</p>
+  <h3 id="so-what-is-videolan-and-my-project-about">So what is VideoLAN
+  and my Project about?</h3>
+  <p><a href="https://www.videolan.org/">VideoLAN</a> is a
+  not-for-profit organization that develops and maintains a lot of open
+  source projects which are used by billions worldwide including VLC
+  Player, libVLC, x264, x265 and more..<br />
+  <a href=" https://summerofcode.withgoogle.com/myprojects/details/eyxxsgo0">My
+  Project</a> involves adding AAC via S/PDIF and Bluetooth support for
+  direct passthrough.</p>
+  <h2 id="project-idea">Project Idea</h2>
+  <p>VLC is an extensive open-source media player with a solid backend
+  capable of handling anything you throw at it. It’s libVLC core is
+  modularized into hundreds of plugins, which may be loaded at runtime.
+  This architecture provides great flexibility to developers to create a
+  wide range of multimedia applications using the VLC features.</p>
+  <p>VLC currently can’t handle direct passthrough of AAC encoded
+  streams instead it decodes it and sends a PCM stream to be played by
+  the amplifier, this needs to be fixed for all major supported OS
+  platforms. This project will certainly put to good use multiple
+  courses i’ve learnt in college including DSP, Communications, MPMC and
+  more..</p>
+  <h2 id="warm-up-tasks">Warm-Up Tasks</h2>
+  <pre><code>Submit your idea
+
+You need to submit your idea on the Google Summer of Code platform.
+
+You should do so, very quickly, even before having finished compilation and the next steps, so that we can give you early feedback.
+Compile VLC or libVLC
+
+This may sound trivial, but it&#39;s harder than many expect. You must compile the project you want to work on.
+
+See https://wiki.videolan.org/Category:Building/ for more informations.
+
+You should come on IRC to get help to compile. </code></pre>
+  <p>For the new open-source contributors who want to contribute in this
+  project and aren’t familiar with its codebase some warm-up tasks were
+  provided to get an understanding of how VLC works under the hood.</p>
+  <h2 id="building-vlc-desktop-and-vlc-android">Building VLC-desktop and
+  VLC-Android</h2>
+  <p>Building VLC desktop is a pretty straigtforward process as long as
+  you have the right dependencies for your system. You can always use
+  docker or just the docker dependencies to build locally.</p>
+  <p>Here’s a short guide for building on VLC-4 Android on
+  Ubuntu/Debian:</p>
+  <h3 id="install-the-dependencies">1. Install the dependencies</h3>
+  <pre><code>sudo apt-get update &amp;&amp; \
+     apt-get -y dist-upgrade &amp;&amp; \
+     apt-get install --no-install-suggests --no-install-recommends -y \
+        openjdk-17-jdk-headless ca-certificates autoconf m4 automake ant autopoint bison \
+        flex build-essential libtool libtool-bin patch pkg-config cmake meson \
+        git yasm g++ gettext ninja-build \
+        wget expect unzip python3 python3-venv python3-setuptools python3-mako \
+        locales libltdl-dev curl nasm gperf \
+        protobuf-compiler &amp;&amp; \</code></pre>
+  <h3 id="download-and-add-the-correct-sdk-and-ndk-to-your-path">2.
+  <a href="https://developer.android.com/sdk/index.html">Download</a>
+  and add the correct Sdk and Ndk to your path</h3>
+  <p>(as of now the latest Sdk and Ndk r25c should work)</p>
+  <p><code>export ANDROID_SDK=/path/to/android-sdk</code><br />
+  <code>export ANDROID_NDK=/path/to/android-ndk</code>
+  <code>export PATH=$PATH:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools</code></p>
+  <h3 id="clone-the-repo">3. Clone the repo</h3>
+  <p><code>git clone https://code.videolan.org/videolan/vlc-android.git</code></p>
+  <h3 id="compile-and-build">4. Compile and build</h3>
+  <p>To build VLC-4 for arm64 you can use the following command. You can
+  also use Android Studio for further development.
+  <code>./buildsystem/compile.sh -a arm64 -vlc4</code></p>
+  <p>Generated apk’s can be found in vlc-android/build/outputs/apk.</p>
+  <h2 id="understanding-what-needs-to-be-done">Understanding what needs
+  to be done</h2>
+  <p>So what currently is happening is that when you play an aac encoded
+  audio file on VLC player instead of directly getting passed through
+  for your audio device to handle it gets decoded into a PCM stream.</p>
+  <p>HDMI and S/PDIF pass encoded data in a IEC61937 standard frame.</p>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+  IEC 61937 Frame Structure
+  </title>
+  <style>
+          figure {
+              text-align: center;
+          }
+          img {
+              width: 70%; /* Adjust the width as needed */
+              height: auto; /* Maintain aspect ratio */
+          }
+      </style>
+  </head>
+  <body>
+  <figure>
+  <img src="/assets/img/IEC.png">
+  <figcaption>
+  IEC 61937 Frame.
+  </figcaption>
+  </figure>
+  </body>
+  </html>
+  <p>VLC core has a toSPDIF converter that has to be modified to support
+  AAC payload.</p>
+  <p>Whereas for bluetooth it gets encapsulated in an A2DP frame.</p>
+  <p>Both of these structures deserve a separate blog for explanation
+  and I will put out a detailed blog for the AAC codec and these
+  structures soon.</p>
+  <h3 id="closing-note">Closing Note</h3>
+  <p>I’m very excited to contribute to my all time favourite media
+  player and learn from master mentors. I’ll keep this blog updated with
+  all the new stuff I learn throughout my journey. Thanks for reading
+  this blog!</p>
+
+</body>
+</html>

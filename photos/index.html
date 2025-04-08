@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photos - Advait</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .gallery img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Lightbox Styles */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>photos</h1>
+    <nav>
+      <a href="../index.html">about</a>
+      <a href="../blog/">blog</a>
+      <a href="../photos/">photos</a>
+    </nav>
+  </header>
+  <main>
+    <div class="gallery">
+      <img src="https://picsum.photos/id/1015/300/200" data-full="https://picsum.photos/id/1015/1200/900" alt="Photo 1" loading="lazy">
+      <img src="https://picsum.photos/id/1024/300/200" data-full="https://picsum.photos/id/1024/1200/900" alt="Photo 2" loading="lazy">
+      <img src="https://picsum.photos/id/1035/300/200" data-full="https://picsum.photos/id/1035/1200/900" alt="Photo 3" loading="lazy">
+      <img src="https://picsum.photos/id/1043/300/200" data-full="https://picsum.photos/id/1043/1200/900" alt="Photo 4" loading="lazy">
+    </div>
+
+    <div class="lightbox" id="lightbox">
+      <img src="" alt="Expanded photo" id="lightbox-img" />
+    </div>
+  </main>
+  <script>
+    const images = document.querySelectorAll('.gallery img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    images.forEach(img => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'flex';
+        lightboxImg.src = img.dataset.full;
+        lightboxImg.alt = img.alt;
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+      lightboxImg.src = "";
+    });
+  </script>
+</body>
+<footer style="margin-top: 4rem; padding-top: 1rem; border-top: 1px solid #ccc; text-align: center; font-size: 0.9rem;">
+  <p>
+    <a href="https://github.com/advait-0" target="_blank" style="margin: 0 1rem;">GitHub</a> |
+    <a href="https://linkedin.com/in/advait-dhamorikar" target="_blank" style="margin: 0 1rem;">LinkedIn</a> |
+    <a href="https://advait-0.github.io/rss.xml" target="_blank">RSS</a>
+  </p>
+  <p style="color: #666;">© 2025 Advait</p>
+</footer>
+</html>

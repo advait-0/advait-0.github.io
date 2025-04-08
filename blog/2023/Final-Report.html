@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GSoC Final Report'23</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    body {
+      font-family: "IBM Plex Mono", monospace;
+      background: #fdfdfd;
+      color: #222;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      text-align: justify;
+    }
+
+    a {
+      color: #005cc5;
+    }
+
+    pre, code {
+      background: #f4f4f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    nav {
+      margin-bottom: 2rem;
+    }
+    nav a {
+      margin-right: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/index.html">home</a>
+    <a href="/blog/">blog</a>
+    <a href="/photos/">photos</a>
+  </nav>
+
+  <p>This is my Google Summer of Code 2023 project with libcamera.</p>
+  <p>It aims to move the current V4L2 implementation of accessing and
+  controlling cameras in OpenCV to libcamera, this will allow for better
+  functionality for more advanced and complex cameras. This will be done
+  by creating a videoio plugin for OpenCV to support libcamera and then
+  creating suitable classes and functions to add the desired
+  functionality.</p>
+  <h2 id="project-details"><span> Project Details </span></h2>
+  <p><span style="color:#B509AC"> Contributor Name:</span> Advait
+  Dhamorikar</p>
+  <p><span style="color:#B509AC"> Mentors:</span> Umang Jain, Paul
+  Elder</p>
+  <p><span style="color:#B509AC"> Organization:</span> libcamera</p>
+  <p><span style="color:#B509AC"> Project:</span> Integrating libcamera
+  into OpenCV</p>
+  <p><span style="color:#B509AC"> Links:</span> * <a
+  href="https://github.com/advait-0/opencv/tree/libcamera-final">Github</a>
+  * <a
+  href="https://summerofcode.withgoogle.com/archive/2023/projects/lKttObKa">Project
+  Page</a></p>
+  <p><br></p>
+  <h2 id="workflow-overview">Workflow Overview</h2>
+  <p>OpenCV is a popular computer-vision library used that offers ease
+  of usage, libcamera is a camera-stack that can handle the complexity
+  of modern embedded cameras with support for open and closed source
+  IPAs. The project aimed to integrate libcamera into the OpenCV
+  backend.</p>
+  <h3 id="adding-libcamera-support">Adding libcamera support</h3>
+
+  <p>
+    If you have libcamera installed
+    <a href="https://libcamera.org/getting-started.html" target="_blank">[docs]</a>
+    and use the libcamera backend when creating a VideoCapture object using:
+  </p>
+
+  <pre><code>cv::VideoCapture cap(0, cv::CAP_LIBCAMERA);</code></pre>
+
+  <p>and if you used this flag with CMake:</p>
+
+  <pre><code>-D WITH_LIBCAMERA=ON</code></pre>
+
+  <p>
+    Macros have been setup which check if your installation is working.
+    Thus, the <code>HAVE_LIBCAMERA</code> flag will be set to true.
+  </p>
+  <h3 id="opencv-backend">OpenCV backend</h3>
+  <p>
+    The call to <code>libcamera</code> is primarily made by <code>cap_libcamera.cpp</code>, which handles all major function calls. The core class <code>CvCapture_libcamera_proxy</code> is derived from OpenCV’s <code>IVideoCapture</code> class. Its key member functions include:
+  </p>
+
+  <ul>
+    <li>
+      <strong>Constructor:</strong> Initializes the <code>CameraManager</code> thread and calls <code>cam_init()</code>, which handles error checking and opens the camera.
+    </li>
+    <li>
+      <strong><code>open(int index)</code>:</strong> Acquires the camera of the specified index. A configuration is generated based on the chosen <em>stream role</em> (e.g., ViewFinder, VideoRecording, Raw, StillCapture). Pixelformat (e.g., YUYV, MJPEG, NV12) and stream dimensions can be customized here. If the configuration is valid, buffers are allocated and requests are queued to the camera.
+    </li>
+    <li>
+      <strong><code>grabFrame()</code>:</strong> Retrieves a frame from the camera’s internal queue.
+    </li>
+    <li>
+      <strong><code>retrieveFrame()</code>:</strong> Processes the retrieved frame. It calls <code>convertToRgb()</code> to transform raw stream data into BGR/RGB format, then requeues the buffer for reuse.
+    </li>
+    <li>
+      <strong><code>convertToRgb()</code>:</strong> Checks the stream configuration and accesses its buffers. These buffers are <code>mmap</code>'d to get their data, which is processed according to the pixelformat and returned as a <code>cv::Mat</code>.
+    </li>
+  </ul>
+  <p><br></p>
+  <h2 id="contributions">Contributions</h2>
+  <p>You can check my commits and code here: <a href="https://github.com/advait-0/opencv/">https://github.com/advait-0/opencv/</a></p>
+  <p><br></p>
+  <h3 id="known-issues">Known issues</h3>
+  <p>The backend has been integrated and supports majority of the
+  IVideoCapture functions and the stream data is successfully being
+  mmaped, however the format and colour conversion of this mapped data
+  is still in testing for YUYV at the time of writing this blog.</p>
+  <h2 id="future-work">Future Work</h2>
+  <ul class="task-list">
+  <li><label><input type="checkbox" checked/> Add support for additional
+  formats like NV12.</label></li>
+  <li><label><input type="checkbox" checked/> Add multi-camera support.</label></li>
+  <li><label><input type="checkbox" /> Utilize dma to have a zero copy
+    workflow.</label></li>
+  </ul>
+  <p><br></p>
+  <h2 id="acknowledgements">Acknowledgements</h2>
+  <p>A very special thanks to my mentors Umang Jain(uajain), Paul Elder
+  (epoll) for always answering my doubts and supporting me throughout.
+  It was a great experience working with them and getting to learn so
+  many new things as a part of the Google Summer of Code. I would also
+  like to extend thanks to Laurent Pinchart(pinchartl), Kieran
+  Bingham(kbingham) and other members of the libcamera organization who
+  helped with my queries.</p>
+  <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; margin-top: 1.5rem;">
+    <img src="../../assets/img/libcamera.png" alt="libcamera" style="width: 60%; max-width: 400px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+    <img src="../../assets/img/gsoc.png" alt="GSoC" style="width: 30%; max-width: 200px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
+  </div>
+
+  <div style="text-align: center; margin-top: 1rem; font-weight: 600; font-size: 1.1rem;">
+    libcamera + GSoC = :-)
+  </div>
+
+</body>
+</html>

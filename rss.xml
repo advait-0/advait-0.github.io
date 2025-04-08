@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>Advait's Blog</title>
+    <link>https://advait-0.github.io/blog/</link>
+    <description>Updates, reports, and curious experiments</description>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 08 Apr 2025 12:00:00 +0000</lastBuildDate>
+
+    <!-- 2025 -->
+    <item>
+      <title>My Post Title</title>
+      <link>https://advait-0.github.io/blog/2025/my-post.html</link>
+      <description>My Post Title</description>
+      <pubDate>Mon, 01 Jan 2025 00:00:00 +0000</pubDate>
+    </item>
+
+    <!-- 2024 -->
+    <item>
+      <title>GSoC'24 Final Report</title>
+      <link>https://advait-0.github.io/blog/2024/GSoC24.html</link>
+      <description>GSoC'24 Final Report</description>
+      <pubDate>Sat, 07 Sep 2024 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Home stretch</title>
+      <link>https://advait-0.github.io/blog/2024/Final-Report-24.html</link>
+      <description>Home stretch</description>
+      <pubDate>Fri, 30 Aug 2024 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>More updates!</title>
+      <link>https://advait-0.github.io/blog/2024/GSoC-24-W3.html</link>
+      <description>More updates!</description>
+      <pubDate>Fri, 23 Aug 2024 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Trying to explain my project</title>
+      <link>https://advait-0.github.io/blog/2024/GSoC-24-W2.html</link>
+      <description>Trying to explain my project</description>
+      <pubDate>Fri, 16 Aug 2024 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Another GSoC?</title>
+      <link>https://advait-0.github.io/blog/2024/GSoC-24-W1.html</link>
+      <description>Another GSoC?</description>
+      <pubDate>Fri, 09 Aug 2024 00:00:00 +0000</pubDate>
+    </item>
+
+    <!-- 2023 -->
+    <item>
+      <title>GSoC'23 Final Report</title>
+      <link>https://advait-0.github.io/blog/2023/Final-Report.html</link>
+      <description>GSoC'23 Final Report</description>
+      <pubDate>Thu, 31 Aug 2023 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Pre-GSoC Stuff</title>
+      <link>https://advait-0.github.io/blog/2023/Pre-GSoC.html</link>
+      <description>Pre-GSoC Stuff</description>
+      <pubDate>Tue, 01 Aug 2023 00:00:00 +0000</pubDate>
+    </item>
+
+  </channel>
+</rss>

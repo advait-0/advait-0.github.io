@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>More updates</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    body {
+      font-family: "IBM Plex Mono", monospace;
+      background: #fdfdfd;
+      color: #222;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      text-align: justify;
+    }
+
+    a {
+      color: #005cc5;
+    }
+
+    pre, code {
+      background: #f4f4f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    nav {
+      margin-bottom: 2rem;
+    }
+    nav a {
+      margin-right: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/index.html">home</a>
+    <a href="/blog/">blog</a>
+    <a href="/photos/">photos</a>
+  </nav>
+
+  <p>In these past few days I was working on the AudioTrack API for
+  Android systems as well as the Core Audio API for Mac and iOS. Now
+  most of the Apple ecosytem used to be coded in Objective-C (Swift in
+  the last 10 years). So I started learning it. Objective C is like the
+  quieter sibling who is not known by many. Both C++ and Objective-C
+  were developed in 1980 as a superset to C language and add OOP(Object
+  Oriented Programming) capabilites to it.</p>
+  <h2 id="basics-of-objective-c">Basics of Objective-C</h2>
+  <p>Objective-C uses a messaging syntax where objects send messages to
+  classes to access its members. We generally utilize the Foundation
+  framework developed by Apple which consist of the necessary classes we
+  would generally utilize including but not limited to NSString, NSLog,
+  NSDate etc. Here’s a fact, the NS is short for NeXTSTEP, the platform
+  for which Foundation was originally conceived. It uses such prefix
+  system as it does not have namespaces as C++.</p>
+  <p>Messages are sent to objects using square brackets</p>
+  <pre><code>[receiver message];
+[receiver messageWithParameter:param];</code></pre>
+  <p>In more conventional languages like C++, Java, or C#, the
+  equivalent would be:</p>
+  <p><code>receiver.message();</code></p>
+  <p>Objective-C traditionally uses manual reference counting, but with
+  Automatic Reference Counting (ARC), memory management is mostly
+  automated.</p>
+  <p>Methods in Objective-C can both return values and receive
+  parameters. for example:</p>
+  <p>In C++:</p>
+  <pre><code>Method objc = new Method();
+Date now = new Date();
+receiver.doSomething(now, objc);</code></pre>
+  <p>Objective-C might not seem intuitive if you’re coming from C++ but
+  here’s how its code would look like.</p>
+  <pre><code>Method* objc = [Method Method];
+Date* now = [Date date];
+[receiver doSomething:now with:objc];</code></pre>
+  <p>The seemingly peculiar syntax of Objective-C becomes more intuitive
+  when you consider it as a means of sending messages between
+  objects.</p>
+  <p>Here’s a quote from Brad Cox, the creator of Objective-C telling us
+  about his conversation with Bjarne Stroustrup, the creator of C++.</p>
+  <blockquote>
+  <p>Back in 1980 when both our languages were under construction, I
+  came down and met with Bjarne Stroustrup. We had radically different
+  views on how our languages would be designed. The key concept was the
+  relative importance of machine efficiency vs programmer efficiency.
+  Eventually, we agreed to disagree.<br />
+  -Brad Cox (Interview for “The NeXT Bible” book)</p>
+  </blockquote>
+  <p>If you’re an intermediate C++ user this info should be enough for
+  you to connect the dots of object oriented programming when starting
+  out with Objective-C development, this obviously isn’t a full-fledged
+  guide. I would suggest you to read this book by Aaron Hillegass and
+  Mikey Ward, <a
+  href="https://www.oreilly.com/library/view/objective-c-programming-the/9780133491920/">Objective-C
+  Programming The Big Nerd Ranch Guide</a>.</p>
+  <h3 id="what-am-i-currently-working-on">What am I currently working
+  on?</h3>
+  <p>My project is a bit experimental and research based so a lot of the
+  time I’m investigating and studying the technology beneath. During my
+  last update I was facing an error. The error was an internal Android
+  error equivalent to the POSIX(Portable Operating System Interface)
+  error ENOSYS “Function not implemented.” This indicates that the
+  function called is not implemented at all, either in the C library
+  itself or in the operating system. Changing the passthrough format
+  from AAC_LC to PCM_16BIT seems to be fixing this error but we are
+  still investigating as to why this needs to be done even when we are
+  passing an undecoded stream to the output device.</p>
+  <p>As a reference I’m looking at the implementations from the Android
+  ExoPlayer and MPV Media player however even they don’t seem to support
+  AAC passthrough over bluetooth A2DP but only over S/PDIF (Sony/Philips
+  Digital Interface). I am studying the Android codebase and
+  understanding how A2DP works to better understand this issue. I am
+  also testing and using the debug logs generated by MPV and Spotify as
+  a reference.</p>
+  <p>I am also reading this book by Richard Boulanger and Victor
+  Lazzarini, <a
+  href="https://mitpress.mit.edu/9780262014465/the-audio-programming-book/">The
+  Audio Programming Book</a>. Its a great book to start off with digital
+  audio programming.</p>
+  <h3 id="acknowledgement">Acknowledgement</h3>
+  <p>Huge Thanks to my mentor Thomas Guillem, I have passed my mid-term
+  GSoC evaluation at the time of writing this blog. Hoping I can do well
+  further too!</p>
+  <p>Merci beaucoup,</p>
+  <p>Thanks for reading!</p>
+
+</body>
+</html>
